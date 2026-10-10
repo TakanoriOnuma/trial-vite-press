@@ -1,0 +1,93 @@
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import { useData } from "vitepress";
+import { Repl, useStore, File } from "@vue/repl";
+// Monaco: 補完・型推論付き。型定義は CDN から取得する
+import Monaco from "@vue/repl/monaco-editor";
+
+const props = withDefaults(
+  defineProps<{
+    /** ファイル名 → コード。`App.vue` が必須（エントリーポイント） */
+    files: Record<string, string>;
+    /** エディタとプレビューの並び。コンテンツ幅が狭いので縦が既定 */
+    layout?: "horizontal" | "vertical";
+    /** true でプレビューを上（または左）に配置 */
+    layoutReverse?: boolean;
+    /** モバイル幅（721px 未満）で最初にプレビューを表示するか */
+    showOutput?: boolean;
+    /** 全体の高さ */
+    height?: string;
+    /** サンドボックスで使う Vue のバージョン。未指定なら @vue/repl 既定 */
+    vueVersion?: string;
+    /** 右ペインに JS / CSS / SSR のコンパイル結果タブを出すか */
+    showCompileOutput?: boolean;
+  }>(),
+  {
+    layout: "vertical",
+    layoutReverse: false,
+    showOutput: true,
+    height: "560px",
+    vueVersion: undefined,
+    showCompileOutput: false,
+  },
+);
+
+const { isDark } = useData();
+const theme = computed(() => (isDark.value ? "dark" : "light"));
+
+// store 内部のファイル名は `src/` プレフィックス付き（import-map.json / tsconfig.json を除く）
+function normalize(filename: string) {
+  if (
+    filename === "import-map.json" ||
+    filename === "tsconfig.json" ||
+    filename.startsWith("src/")
+  ) {
+    return filename;
+  }
+  return `src/${filename}`;
+}
+
+const initialFiles: Record<string, File> = Object.create(null);
+for (const [filename, code] of Object.entries(props.files)) {
+  const name = normalize(filename);
+  initialFiles[name] = new File(name, code);
+}
+
+const store = useStore({
+  files: ref(initialFiles),
+  showOutput: ref(props.showOutput),
+  outputMode: ref("preview"),
+  vueVersion: ref(props.vueVersion ?? null),
+});
+</script>
+
+<template>
+  <div class="vue-playground" :style="{ height }">
+    <Repl
+      :store="store"
+      :editor="Monaco"
+      :theme="theme"
+      :preview-theme="true"
+      :layout="layout"
+      :layout-reverse="layoutReverse"
+      :show-compile-output="showCompileOutput"
+      :show-import-map="false"
+      :show-ts-config="false"
+      :clear-console="false"
+      :auto-resize="true"
+    />
+  </div>
+</template>
+
+<style scoped>
+.vue-playground {
+  margin: 16px 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.vue-playground :deep(.vue-repl) {
+  height: 100%;
+}
+</style>
