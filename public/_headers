@@ -1,0 +1,12 @@
+# Cloudflare Pages のレスポンスヘッダー設定（ビルド時に .vitepress/dist/_headers にコピーされる）
+# https://developers.cloudflare.com/pages/configuration/headers/
+#
+# StackBlitz 埋め込み（WebContainers）には親ページが cross-origin isolated である必要があるため、
+# サイト全体に COOP/COEP を付ける。
+# パスを絞ると VitePress の SPA 遷移でヘッダーなしのドキュメントのまま表示されることがあるため、全体に付けている。
+# 開発時は .vitepress/config.mts の cross-origin-isolation-headers プラグインが同じヘッダーを付ける。
+#
+# 注意: COEP により、CORP/COEP を返さない外部サイトの iframe 埋め込み（play.vuejs.org など）は表示できなくなる。
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: credentialless

@@ -42,6 +42,10 @@ import greetingCode from './examples/Greeting.vue?raw'
 
 ### Iframe
 
+::: warning COOP/COEP の設定により表示できません
+StackBlitz 埋め込みのために親ページに `Cross-Origin-Embedder-Policy` を付けているため、CORP/COEP を返さない play.vuejs.org の iframe はブラウザにブロックされ、空白になります。ページ内で動かす場合は下の `@vue/repl` を使ってください。
+:::
+
 <iframe
   src="https://play.vuejs.org/#eNp9kUFLAzEQhf/KmMsq1F2l4qFsCyoF9aCiopeAlO10uzWbhGRSC8v+dycprT1Ib5n33ky+TDpxY22+DihGovSVayyBRwp2InXTWuMIOnC4gB4WzrSQcTSTWurKaE/Q+hrG0T/N7lEpA5/GqflJdiZ1WWzH8SAuCFurZoRcAZTLy0nXpea+LwuuktpoGwjW562ZoxpLwb4UULBZFgf9YiDI8/WLps5X3mgm72K/FJVpbaPQPVtqGE+KESQnejOm+3lMGrmAg51eLbH6/kdf+U3UpHhx6NGtUYq9RzNXI23t6dsTbvi8N5k+KE4fMV/RGxUi4zZ2G/ScsQ9yifYh7b/R9bufbgi13z0qgsZkn/JS8J/cHXn6H+4wv0p9Uve8xS/yH+jiVF7hdX6RD0X/CxF7rUQ="
   style="width: 100%; height: 500px; border: 1px solid var(--vp-c-divider); border-radius: 8px;"

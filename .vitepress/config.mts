@@ -16,6 +16,7 @@ export default defineConfig({
         // Vite の `server.headers` は VitePress が HTML を返す独自ミドルウェアには効かないため、
         // プラグインのミドルウェアとして先頭に差し込む。
         // `vitepress preview` は Vite ではなく独自サーバー（polka + sirv）なのでこの設定は効かない。
+        // 本番（Cloudflare Pages）では public/_headers で同じヘッダーを付ける。
         name: "cross-origin-isolation-headers",
         configureServer(server) {
           server.middlewares.use((_req, res, next) => {
