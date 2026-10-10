@@ -24,6 +24,12 @@ const props = withDefaults(
     height?: string;
     /** サンドボックスで使う Vue のバージョン。未指定なら @vue/repl 既定 */
     vueVersion?: string;
+    /**
+     * Monaco の型推論に使う TypeScript のバージョン。
+     * `latest`（7.x）は Go 製コンパイラで JS 版言語サービスも lib.*.d.ts も
+     * 含まれないため型がすべて any になる。公式 Playground と同じ 6.0.3 に固定
+     */
+    typescriptVersion?: string;
     /** 右ペインに JS / CSS / SSR のコンパイル結果タブを出すか */
     showCompileOutput?: boolean;
   }>(),
@@ -34,6 +40,7 @@ const props = withDefaults(
     showOutput: true,
     height: "560px",
     vueVersion: undefined,
+    typescriptVersion: "6.0.3",
     showCompileOutput: false,
   },
 );
@@ -45,6 +52,7 @@ const store = useStore({
   showOutput: ref(props.showOutput),
   outputMode: ref("preview"),
   vueVersion: ref(props.vueVersion ?? null),
+  typescriptVersion: ref(props.typescriptVersion),
 });
 
 // useStore は serializedState を渡さないと App.vue をウェルカムコードで上書きするため、
