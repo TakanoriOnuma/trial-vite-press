@@ -15,15 +15,15 @@ import greetingCode from './examples/Greeting.vue?raw'
   style="width: 100%; height: 500px; border: 1px solid var(--vp-c-divider); border-radius: 8px;"
 ></iframe>
 
-### @vue/repl（単一ファイル）
+### @vue/repl（単一ファイル・Monaco エディタ）
 
-`examples/Counter.vue` を `?raw` で文字列として読み込み、`App.vue` として渡しています。
+`examples/Counter.vue` を `?raw` で文字列として読み込み、`App.vue` として渡しています。`editor="monaco"` で補完・型推論付きの Monaco エディタになります。
 
-<VuePlayground :files="{ 'App.vue': counterCode }" />
+<VuePlayground :files="{ 'App.vue': counterCode }" editor="monaco" />
 
-### @vue/repl（複数ファイル）
+### @vue/repl（複数ファイル・CodeMirror エディタ）
 
-`files` に複数のファイルを渡すとタブで切り替えられます。`App.vue` がエントリーポイントになります。
+`files` に複数のファイルを渡すとタブで切り替えられます。`App.vue` がエントリーポイントになります。エディタは既定の CodeMirror です。
 
 <VuePlayground
   :files="{ 'App.vue': helloAppCode, 'Greeting.vue': greetingCode }"
@@ -43,6 +43,7 @@ import counterCode from './examples/Counter.vue?raw'
 | prop                  | 既定値     | 説明                                  |
 | --------------------- | ---------- | ------------------------------------- |
 | `files`               | 必須       | ファイル名 → コード。`App.vue` が必須 |
+| `editor`              | `codemirror` | `codemirror` / `monaco`。Monaco はエディタのモデルがページ全体で共有されるため 1 ページに 1 つまで |
 | `layout`              | `vertical` | `horizontal` / `vertical`             |
 | `layout-reverse`      | `false`    | プレビューを先に配置                  |
 | `show-output`         | `true`     | モバイル幅で最初にプレビューを表示    |

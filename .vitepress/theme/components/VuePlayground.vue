@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, shallowRef, computed, onMounted } from "vue";
 import { useData } from "vitepress";
-import { Repl, useStore, File } from "@vue/repl";
-// Monaco: 補完・型推論付き。型定義は CDN から取得する
-import Monaco from "@vue/repl/monaco-editor";
+import { Repl, useStore, type ReplProps } from "@vue/repl";
 
 const props = withDefaults(
   defineProps<{
     /** ファイル名 → コード。`App.vue` が必須（エントリーポイント） */
     files: Record<string, string>;
+    /**
+     * エディタの種類。
+     * - codemirror: 軽量。1 ページに複数配置しても安全（既定）
+     * - monaco: 補完・型推論付き。Monaco のモデルがページ全体で
+     *   `file:///src/App.vue` のような URI で共有されるため、1 ページに 1 つまで
+     */
+    editor?: "codemirror" | "monaco";
     /** エディタとプレビューの並び。コンテンツ幅が狭いので縦が既定 */
     layout?: "horizontal" | "vertical";
     /** true でプレビューを上（または左）に配置 */
@@ -23,6 +28,7 @@ const props = withDefaults(
     showCompileOutput?: boolean;
   }>(),
   {
+    editor: "codemirror",
     layout: "vertical",
     layoutReverse: false,
     showOutput: true,
@@ -35,37 +41,33 @@ const props = withDefaults(
 const { isDark } = useData();
 const theme = computed(() => (isDark.value ? "dark" : "light"));
 
-// store 内部のファイル名は `src/` プレフィックス付き（import-map.json / tsconfig.json を除く）
-function normalize(filename: string) {
-  if (
-    filename === "import-map.json" ||
-    filename === "tsconfig.json" ||
-    filename.startsWith("src/")
-  ) {
-    return filename;
-  }
-  return `src/${filename}`;
-}
-
-const initialFiles: Record<string, File> = Object.create(null);
-for (const [filename, code] of Object.entries(props.files)) {
-  const name = normalize(filename);
-  initialFiles[name] = new File(name, code);
-}
-
 const store = useStore({
-  files: ref(initialFiles),
   showOutput: ref(props.showOutput),
   outputMode: ref("preview"),
   vueVersion: ref(props.vueVersion ?? null),
+});
+
+// useStore は serializedState を渡さないと App.vue をウェルカムコードで上書きするため、
+// 初期化後に setFiles() で差し替える（ファイル名の src/ プレフィックス付与も任せる）
+store.setFiles(props.files, "App.vue");
+
+// エディタは使うものだけ遅延読み込みする（Monaco はバンドルが大きい）
+const editorComponent = shallowRef<ReplProps["editor"]>();
+onMounted(async () => {
+  const mod =
+    props.editor === "monaco"
+      ? await import("@vue/repl/monaco-editor")
+      : await import("@vue/repl/codemirror-editor");
+  editorComponent.value = mod.default;
 });
 </script>
 
 <template>
   <div class="vue-playground" :style="{ height }">
     <Repl
+      v-if="editorComponent"
       :store="store"
-      :editor="Monaco"
+      :editor="editorComponent"
       :theme="theme"
       :preview-theme="true"
       :layout="layout"
