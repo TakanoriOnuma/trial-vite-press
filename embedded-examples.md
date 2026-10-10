@@ -1,12 +1,24 @@
 # Embedded Examples
 
+## StackBlitz
+
+### Iframe
+
+<iframe
+  src="https://stackblitz.com/edit/vitejs-vite-g9mvnye1?ctl=1&embed=1&file=src%2FApp.tsx&view=preview&corp=1"
+  allow="cross-origin-isolated"
+  style="width: 100%; height: 500px; border: 1px solid var(--vp-c-divider); border-radius: 8px;"
+></iframe>
+
+### @stackblitz/sdk
+
+## Vue SFC Playground
+
 <script setup>
 import counterCode from './examples/Counter.vue?raw'
 import helloAppCode from './examples/HelloApp.vue?raw'
 import greetingCode from './examples/Greeting.vue?raw'
 </script>
-
-## Vue SFC Playground
 
 ### Iframe
 
@@ -40,13 +52,13 @@ import counterCode from './examples/Counter.vue?raw'
 <VuePlayground :files="{ 'App.vue': counterCode }" />
 ```
 
-| prop                  | 既定値     | 説明                                  |
-| --------------------- | ---------- | ------------------------------------- |
-| `files`               | 必須       | ファイル名 → コード。`App.vue` が必須 |
+| prop                  | 既定値       | 説明                                                                                               |
+| --------------------- | ------------ | -------------------------------------------------------------------------------------------------- |
+| `files`               | 必須         | ファイル名 → コード。`App.vue` が必須                                                              |
 | `editor`              | `codemirror` | `codemirror` / `monaco`。Monaco はエディタのモデルがページ全体で共有されるため 1 ページに 1 つまで |
-| `layout`              | `vertical` | `horizontal` / `vertical`             |
-| `layout-reverse`      | `false`    | プレビューを先に配置                  |
-| `show-output`         | `true`     | モバイル幅で最初にプレビューを表示    |
-| `height`              | `560px`    | 全体の高さ                            |
-| `vue-version`         | なし       | サンドボックスで使う Vue のバージョン |
-| `show-compile-output` | `false`    | JS / CSS のコンパイル結果タブを表示   |
+| `layout`              | `vertical`   | `horizontal` / `vertical`                                                                          |
+| `layout-reverse`      | `false`      | プレビューを先に配置                                                                               |
+| `show-output`         | `true`       | モバイル幅で最初にプレビューを表示                                                                 |
+| `height`              | `560px`      | 全体の高さ                                                                                         |
+| `vue-version`         | なし         | サンドボックスで使う Vue のバージョン                                                              |
+| `show-compile-output` | `false`      | JS / CSS のコンパイル結果タブを表示                                                                |

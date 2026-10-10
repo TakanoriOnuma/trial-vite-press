@@ -9,6 +9,23 @@ export default defineConfig({
     optimizeDeps: {
       exclude: ["@vue/repl"],
     },
+    plugins: [
+      {
+        // StackBlitz 埋め込み（WebContainers）に必要な cross-origin isolation 用ヘッダーを
+        // dev サーバーの全レスポンスに付ける。
+        // Vite の `server.headers` は VitePress が HTML を返す独自ミドルウェアには効かないため、
+        // プラグインのミドルウェアとして先頭に差し込む。
+        // `vitepress preview` は Vite ではなく独自サーバー（polka + sirv）なのでこの設定は効かない。
+        name: "cross-origin-isolation-headers",
+        configureServer(server) {
+          server.middlewares.use((_req, res, next) => {
+            res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+            res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
+            next();
+          });
+        },
+      },
+    ],
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
