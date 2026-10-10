@@ -8,9 +8,15 @@ const VuePlayground = defineClientComponent(
   () => import("./components/VuePlayground.vue"),
 );
 
+// @stackblitz/sdk も document を触るためクライアント側でのみ読み込む
+const StackBlitzEmbed = defineClientComponent(
+  () => import("./components/StackBlitzEmbed.vue"),
+);
+
 export default {
   extends: DefaultTheme,
   enhanceApp({ app }) {
     app.component("VuePlayground", VuePlayground);
+    app.component("StackBlitzEmbed", StackBlitzEmbed);
   },
 } satisfies Theme;

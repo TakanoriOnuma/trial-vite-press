@@ -12,6 +12,26 @@
 
 ### @stackblitz/sdk
 
+`embedProjectId` に `crossOriginIsolated: true` を渡すと、URL への `corp=1` 付与と `allow="cross-origin-isolated"` の委譲を SDK がやってくれます。`theme` は VitePress のダークモードに追従します。
+
+<StackBlitzEmbed project-id="vitejs-vite-g9mvnye1" open-file="src/App.tsx" />
+
+```md
+<StackBlitzEmbed project-id="vitejs-vite-g9mvnye1" open-file="src/App.tsx" />
+```
+
+| prop              | 既定値    | 説明                                                         |
+| ----------------- | --------- | ------------------------------------------------------------ |
+| `project-id`      | 必須      | `stackblitz.com/edit/<projectId>` の projectId               |
+| `open-file`       | なし      | 最初に開くファイル。カンマ区切りで複数可                     |
+| `view`            | `preview` | `editor` / `preview` / `default`（両方）                     |
+| `height`          | `500`     | iframe の高さ                                                |
+| `click-to-load`   | `true`    | 「Run project」を押すまで WebContainer を起動しない          |
+| `hide-navigation` | `false`   | プレビュー上部の URL バーを隠す                              |
+| `hide-explorer`   | `false`   | 左のアクティビティバーを隠す                                 |
+| `terminal-height` | なし      | ターミナルの高さ（%）                                        |
+| `start-script`    | なし      | 起動時に実行する npm script。未指定なら `dev` または `start` |
+
 ## Vue SFC Playground
 
 <script setup>

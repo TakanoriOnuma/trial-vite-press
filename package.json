@@ -5,6 +5,7 @@
     "docs:preview": "vitepress preview"
   },
   "devDependencies": {
+    "@stackblitz/sdk": "^1.11.1",
     "@vue/repl": "^4.7.2",
     "vitepress": "^1.6.4",
     "vue": "^3.5.43"
